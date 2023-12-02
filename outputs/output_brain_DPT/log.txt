@@ -1,0 +1,305 @@
+***************
+** Arguments **
+***************
+backbone: 
+config_file: ./configs/trainers/VPT/vit_b32_deep.yaml
+dataset_config_file: configs/datasets/brain.yaml
+eval_only: False
+head: 
+load_epoch: None
+model_dir: 
+no_train: False
+opts: ['TRAINER.COOP.N_CTX', '16', 'TRAINER.COOP.CSC', 'False', 'TRAINER.COOP.CLASS_TOKEN_POSITION', 'end', 'DATASET.NUM_SHOTS', '64', 'TRAINER.VPT.N_CTX', '10', 'TRAINER.TOPDOWN_SECOVPT.BOTTOMLIMIT', '12', 'TRAINER.SELECTED_COVPT.CPN', '10', 'OPTIM.LR', '0.01', 'OPTIM.MAX_EPOCH', '15', 'PRETRAIN.C', '30', 'TRAINER.ALPHA', '0.3']
+output_dir: ./outputs/output_brain_DPT
+resume: 
+root: ./datasets/DATA
+seed: 0
+source_domains: None
+target_domains: None
+trainer: DPT
+transforms: None
+************
+** Config **
+************
+DATALOADER:
+  K_TRANSFORMS: 1
+  NUM_WORKERS: 2
+  RETURN_IMG0: False
+  TEST:
+    BATCH_SIZE: 50
+    SAMPLER: SequentialSampler
+  TRAIN_U:
+    BATCH_SIZE: 32
+    N_DOMAIN: 0
+    N_INS: 16
+    SAME_AS_X: True
+    SAMPLER: RandomSampler
+  TRAIN_X:
+    BATCH_SIZE: 32
+    N_DOMAIN: 0
+    N_INS: 16
+    SAMPLER: RandomSampler
+DATASET:
+  ALL_AS_UNLABELED: False
+  CIFAR_C_LEVEL: 1
+  CIFAR_C_TYPE: 
+  NAME: Brain
+  NUM_LABELED: -1
+  NUM_SHOTS: 64
+  ROOT: ./datasets/DATA
+  SOURCE_DOMAINS: ()
+  STL10_FOLD: -1
+  SUBSAMPLE_CLASSES: all
+  TARGET_DOMAINS: ()
+  VAL_PERCENT: 0.1
+INPUT:
+  COLORJITTER_B: 0.4
+  COLORJITTER_C: 0.4
+  COLORJITTER_H: 0.1
+  COLORJITTER_S: 0.4
+  CROP_PADDING: 4
+  CUTOUT_LEN: 16
+  CUTOUT_N: 1
+  GB_K: 21
+  GB_P: 0.5
+  GN_MEAN: 0.0
+  GN_STD: 0.15
+  INTERPOLATION: bicubic
+  NO_TRANSFORM: False
+  PIXEL_MEAN: [0.48145466, 0.4578275, 0.40821073]
+  PIXEL_STD: [0.26862954, 0.26130258, 0.27577711]
+  RANDAUGMENT_M: 10
+  RANDAUGMENT_N: 2
+  RGS_P: 1.0
+  RRCROP_SCALE: (0.08, 1.0)
+  SIZE: (224, 224)
+  TRANSFORMS: ('random_resized_crop', 'random_flip', 'randomgrayscale', 'normalize')
+MODEL:
+  BACKBONE:
+    NAME: ViT-B/32
+    PRETRAINED: True
+  HEAD:
+    ACTIVATION: relu
+    BN: True
+    DROPOUT: 0.0
+    HIDDEN_LAYERS: ()
+    NAME: 
+  INIT_WEIGHTS: 
+OPTIM:
+  ADAM_BETA1: 0.9
+  ADAM_BETA2: 0.999
+  BASE_LR_MULT: 0.1
+  GAMMA: 0.1
+  LR: 0.01
+  LR_SCHEDULER: cosine
+  MAX_EPOCH: 15
+  MOMENTUM: 0.9
+  NAME: sgd
+  NEW_LAYERS: ()
+  RMSPROP_ALPHA: 0.99
+  SGD_DAMPNING: 0
+  SGD_NESTEROV: False
+  STAGED_LR: False
+  STEPSIZE: (-1,)
+  WARMUP_CONS_LR: 1e-05
+  WARMUP_EPOCH: 10
+  WARMUP_MIN_LR: 1e-05
+  WARMUP_RECOUNT: True
+  WARMUP_TYPE: constant
+  WEIGHT_DECAY: 0.0005
+OUTPUT_DIR: ./outputs/output_brain_DPT
+PRETRAIN:
+  C: 30
+RESUME: 
+SEED: -1
+TEST:
+  COMPUTE_CMAT: False
+  EVALUATOR: Classification
+  FINAL_MODEL: last_step
+  NO_TEST: False
+  PER_CLASS_RESULT: False
+  SPLIT: test
+TRAIN:
+  CHECKPOINT_FREQ: 0
+  COUNT_ITER: train_x
+  PRINT_FREQ: 5
+TRAINER:
+  ALPHA: 0.3
+  CDAC:
+    CLASS_LR_MULTI: 10
+    P_THRESH: 0.95
+    RAMPUP_COEF: 30
+    RAMPUP_ITRS: 1000
+    STRONG_TRANSFORMS: ()
+    TOPK_MATCH: 5
+  COCOOP:
+    CTX_INIT: 
+    N_CTX: 16
+    PREC: fp16
+  COOP:
+    CLASS_TOKEN_POSITION: end
+    CSC: False
+    CTX_INIT: 
+    N_CTX: 16
+    PREC: fp16
+  CROSSGRAD:
+    ALPHA_D: 0.5
+    ALPHA_F: 0.5
+    EPS_D: 1.0
+    EPS_F: 1.0
+  DAEL:
+    CONF_THRE: 0.95
+    STRONG_TRANSFORMS: ()
+    WEIGHT_U: 0.5
+  DAELDG:
+    CONF_THRE: 0.95
+    STRONG_TRANSFORMS: ()
+    WEIGHT_U: 0.5
+  DDAIG:
+    ALPHA: 0.5
+    CLAMP: False
+    CLAMP_MAX: 1.0
+    CLAMP_MIN: -1.0
+    G_ARCH: 
+    LMDA: 0.3
+    WARMUP: 0
+  DOMAINMIX:
+    ALPHA: 1.0
+    BETA: 1.0
+    TYPE: crossdomain
+  ENTMIN:
+    LMDA: 0.001
+  FIXMATCH:
+    CONF_THRE: 0.95
+    STRONG_TRANSFORMS: ()
+    WEIGHT_U: 1.0
+  M3SDA:
+    LMDA: 0.5
+    N_STEP_F: 4
+  MCD:
+    N_STEP_F: 4
+  MEANTEACHER:
+    EMA_ALPHA: 0.999
+    RAMPUP: 5
+    WEIGHT_U: 1.0
+  MIXMATCH:
+    MIXUP_BETA: 0.75
+    RAMPUP: 20000
+    TEMP: 2.0
+    WEIGHT_U: 100.0
+  MME:
+    LMDA: 0.1
+  NAME: DPT
+  SE:
+    CONF_THRE: 0.95
+    EMA_ALPHA: 0.999
+    RAMPUP: 300
+  SELECTED_COVPT:
+    CPN: 10
+  TOPDOWN_SECOVPT:
+    BOTTOMLIMIT: 12
+    LR: 0.01
+  VPT:
+    LN: False
+    N_CTX: 10
+USE_CUDA: True
+VERBOSE: True
+VERSION: 1
+Loading trainer: DPT
+Loading dataset: Brain
+Reading split from /home/aryan/Aryan/Courses/IE643/Project/Code/DPT/datasets/DATA/brain/split_zhou_brain.json
+Creating a 64-shot dataset
+Creating a 4-shot dataset
+Saving preprocessed few-shot data to /home/aryan/Aryan/Courses/IE643/Project/Code/DPT/datasets/DATA/brain/split_fewshot/shot_64-seed_-1.pkl
+random_resized_crop
+random_flip
+randomgrayscale
+normalize
+Building transform_train
++ random resized crop (size=(224, 224), scale=(0.08, 1.0))
++ random flip
++ to torch tensor of range [0, 1]
++ random gray scale
++ normalization (mean=[0.48145466, 0.4578275, 0.40821073], std=[0.26862954, 0.26130258, 0.27577711])
+random_resized_crop
+random_flip
+randomgrayscale
+normalize
+Building transform_test
++ resize the smaller edge to 224
++ 224x224 center crop
++ to torch tensor of range [0, 1]
++ random gray scale
++ normalization (mean=[0.48145466, 0.4578275, 0.40821073], std=[0.26862954, 0.26130258, 0.27577711])
+---------  -----
+Dataset    Brain
+# classes  4
+# train_x  256
+# val      16
+# test     2,109
+---------  -----
+Loading CLIP (backbone: ViT-B/32)
+Model stats for 
+- output_embed_dim: 512
+- vision_width: 768
+- vision_layers: 12
+- vision_patch_size: 32
+- vision_heads: 12
+- grid_size: 7
+- image_resolution: 224
+- context_length: 77
+- vocab_size: 49408
+- transformer_width: 512
+- transformer_heads: 8
+- transformer_layers: 12
+- total number of parameters: 151,277,313
+Building custom CLIP VPT Deep
+Initializing a generic context
+Initial context: "X X X X X X X X X X X X X X X X"
+Number of context words (tokens): 16
+Turning off gradients in both the image and the text encoder
+prompt_learner.ctx
+image_encoder.transformer.ctx_learner.ctx
+image_encoder.transformer.extractor.ctx
+image_encoder.transformer.extractor.meta_nets.0.weight
+image_encoder.transformer.extractor.meta_nets.0.bias
+image_encoder.transformer.extractor.attns.0.kmlp.weight
+image_encoder.transformer.extractor.attns.0.qmlp.weight
+image_encoder.transformer.extractor.attns.0.vmlp.weight
+image_encoder.transformer.extractor.lns.0.weight
+image_encoder.transformer.extractor.lns.0.bias
+image_encoder.transformer.extractor.classfiers.0.weight
+image_encoder.transformer.extractor.lns2.0.weight
+image_encoder.transformer.extractor.lns2.0.bias
+Loading evaluator: Classification
+./outputs/output_brain_DPT
+No checkpoint found, train from scratch
+Initialize tensorboard (log_dir=./outputs/output_brain_DPT/tensorboard)
+epoch [1/15] batch [5/8] time 0.230 (0.330) data 0.000 (0.049) loss 5.3945 (5.7492) acc 18.7500 (22.5000) lr 1.0000e-05 eta 0:00:37
+epoch [2/15] batch [5/8] time 0.228 (0.247) data 0.000 (0.031) loss 3.4805 (4.0176) acc 34.3750 (24.3750) lr 1.0000e-05 eta 0:00:26
+epoch [3/15] batch [5/8] time 0.227 (0.246) data 0.000 (0.029) loss 3.2559 (3.2621) acc 34.3750 (31.2500) lr 1.0000e-05 eta 0:00:24
+epoch [4/15] batch [5/8] time 0.227 (0.248) data 0.000 (0.030) loss 3.1582 (3.2008) acc 28.1250 (34.3750) lr 1.0000e-05 eta 0:00:22
+epoch [5/15] batch [5/8] time 0.227 (0.247) data 0.000 (0.028) loss 3.0000 (3.1066) acc 46.8750 (43.1250) lr 1.0000e-05 eta 0:00:20
+epoch [6/15] batch [5/8] time 0.227 (0.249) data 0.000 (0.030) loss 3.0391 (3.0855) acc 37.5000 (38.7500) lr 1.0000e-05 eta 0:00:18
+epoch [7/15] batch [5/8] time 0.228 (0.248) data 0.000 (0.028) loss 3.0312 (2.9805) acc 50.0000 (36.8750) lr 1.0000e-05 eta 0:00:16
+epoch [8/15] batch [5/8] time 0.227 (0.250) data 0.000 (0.031) loss 2.9648 (2.9371) acc 46.8750 (42.5000) lr 1.0000e-05 eta 0:00:14
+epoch [9/15] batch [5/8] time 0.228 (0.254) data 0.000 (0.033) loss 3.2031 (2.9508) acc 43.7500 (45.6250) lr 1.0000e-05 eta 0:00:12
+epoch [10/15] batch [5/8] time 0.227 (0.252) data 0.000 (0.031) loss 2.7441 (2.7898) acc 46.8750 (52.5000) lr 1.0000e-05 eta 0:00:10
+epoch [11/15] batch [5/8] time 0.228 (0.248) data 0.000 (0.027) loss 2.6680 (2.9840) acc 43.7500 (43.1250) lr 1.0000e-02 eta 0:00:08
+epoch [12/15] batch [5/8] time 0.227 (0.250) data 0.000 (0.029) loss 2.2383 (2.5453) acc 59.3750 (46.8750) lr 9.8907e-03 eta 0:00:06
+epoch [13/15] batch [5/8] time 0.228 (0.251) data 0.000 (0.031) loss 2.6250 (2.4965) acc 37.5000 (41.8750) lr 9.5677e-03 eta 0:00:04
+epoch [14/15] batch [5/8] time 0.229 (0.251) data 0.000 (0.030) loss 2.0645 (2.3563) acc 43.7500 (43.7500) lr 9.0451e-03 eta 0:00:02
+epoch [15/15] batch [5/8] time 0.227 (0.251) data 0.000 (0.029) loss 2.0469 (2.1137) acc 50.0000 (39.3750) lr 8.3457e-03 eta 0:00:00
+Checkpoint saved to ./outputs/output_brain_DPT/image_encoder.transformer.ctx_learner/model.pth.tar-15
+Checkpoint saved to ./outputs/output_brain_DPT/image_encoder.transformer.extractor/model.pth.tar-15
+Checkpoint saved to ./outputs/output_brain_DPT/prompt_learner/model.pth.tar-15
+Finish training
+Deploy the last-epoch model
+Evaluate on the *test* set
+=> result
+* total: 2,109
+* correct: 968
+* accuracy: 45.9%
+* error: 54.1%
+* macro_f1: 33.9%
+Elapsed: 0:00:40
